@@ -215,7 +215,8 @@ class StatCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 22, horizontal: 14),
+        constraints: const BoxConstraints(minHeight: 132),
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
         decoration: BoxDecoration(
           color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(20),
@@ -227,21 +228,30 @@ class StatCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            CircleAvatar(
+              radius: 18,
+              backgroundColor: color.withValues(alpha: 0.12),
+              child: Icon(icon, color: color, size: 18),
+            ),
+            const SizedBox(height: 8),
+            Text(value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: color, fontSize: 24, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 6),
             Text(label,
                 textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                    color: AppColors.textDark, fontWeight: FontWeight.w600)),
-            const SizedBox(height: 10),
-            Text(value,
-                style: TextStyle(
-                    color: color, fontSize: 30, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: color.withValues(alpha: 0.12),
-              child: Icon(icon, color: color, size: 20),
-            ),
+                    color: AppColors.textDark,
+                    fontSize: 13,
+                    height: 1.2,
+                    fontWeight: FontWeight.w600)),
           ],
         ),
       ),

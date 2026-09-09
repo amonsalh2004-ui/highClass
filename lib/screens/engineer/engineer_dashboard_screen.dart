@@ -99,7 +99,7 @@ class _CncHomeTabState extends State<_CncHomeTab> {
                           color: AppColors.success,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: StatCard(
                           label: 'قيد التنفيذ',
@@ -108,7 +108,11 @@ class _CncHomeTabState extends State<_CncHomeTab> {
                           color: AppColors.maroon,
                         ),
                       ),
-                      const SizedBox(width: 10),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
                       Expanded(
                         child: StatCard(
                           label: 'جاهز للـ CNC',
@@ -117,6 +121,8 @@ class _CncHomeTabState extends State<_CncHomeTab> {
                           color: AppColors.gold,
                         ),
                       ),
+                      const SizedBox(width: 12),
+                      const Expanded(child: SizedBox()),
                     ],
                   ),
                   const SizedBox(height: 22),
