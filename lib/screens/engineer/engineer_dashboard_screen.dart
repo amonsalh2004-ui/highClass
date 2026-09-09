@@ -77,7 +77,7 @@ class _CncHomeTabState extends State<_CncHomeTab> {
           BrandHeader(
             title: 'لوحة الـ CNC',
             height: 210,
-            trailing: const RolePill(label: 'مهندس', icon: Icons.engineering),
+            trailing: const RolePill(label: 'المهندس صابر', icon: Icons.engineering),
           ),
           Expanded(
             child: Container(

@@ -10,9 +10,9 @@ extension UserRoleX on UserRole {
       case UserRole.manager:
         return 'مدير';
       case UserRole.engineer:
-        return 'مهندس';
+        return 'المهندس صابر';
       case UserRole.designer:
-        return 'مصمم';
+        return 'المهندسة تقوى';
     }
   }
 
@@ -23,7 +23,7 @@ extension UserRoleX on UserRole {
       case UserRole.engineer:
         return Icons.engineering_outlined;
       case UserRole.designer:
-        return Icons.edit_outlined;
+        return Icons.engineering_outlined;
     }
   }
 }

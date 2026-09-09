@@ -193,7 +193,7 @@ class _PartDetailsScreenState extends State<PartDetailsScreen> {
                       widget.part.missingData.insert(
                         0,
                         MissingDataItem(
-                          author: 'المصمم',
+                          author: 'المهندسة تقوى',
                           text: controller.text.trim(),
                           time: DateTime.now(),
                         ),

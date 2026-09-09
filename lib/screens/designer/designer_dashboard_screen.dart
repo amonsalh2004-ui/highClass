@@ -91,7 +91,7 @@ class _DesignerHomeTabState extends State<_DesignerHomeTab> {
               padding: EdgeInsets.only(top: 4),
               child: Icon(Icons.notifications_none, color: AppColors.gold),
             ),
-            trailing: const RolePill(label: 'مصمم', icon: Icons.edit),
+            trailing: const RolePill(label: 'المهندسة تقوى', icon: Icons.engineering),
           ),
           Expanded(
             child: Container(
