@@ -121,12 +121,21 @@ class _CncHomeTabState extends State<_CncHomeTab> {
                   ),
                   const SizedBox(height: 22),
                   Row(
+                    textDirection: TextDirection.rtl,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Icon(Icons.filter_list, color: AppColors.maroon),
-                      const Text('جاهز للتنفيذ',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text(
+                        'جاهز للتنفيذ',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Icon(
+                        Icons.filter_list,
+                        color: AppColors.maroon,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -157,9 +166,19 @@ class _CncHomeTabState extends State<_CncHomeTab> {
                       ),
                     );
                   }),
-                  const SizedBox(height: 6),
-                  const Text('قيد التنفيذ حالياً',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+const SizedBox(height: 6),
+const Align(
+  alignment: AlignmentDirectional.centerStart,
+  child: Text(
+    'قيد التنفيذ حالياً',
+    textAlign: TextAlign.start,
+    style: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+),
+
                   const SizedBox(height: 12),
                   ...allParts
                       .where((p) => p.cncStatus == CncStatus.inProgress)
@@ -205,8 +224,10 @@ class _CncReadyCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(16),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(20),
@@ -217,8 +238,10 @@ class _CncReadyCard extends StatelessWidget {
                 offset: const Offset(0, 3)),
           ],
         ),
-        child: Row(
-          children: [
+          child: Row(
+            textDirection: TextDirection.rtl,
+            children: [
+            // In RTL the first child is visually on the right.
             Container(
               width: 54,
               height: 54,
@@ -226,26 +249,42 @@ class _CncReadyCard extends StatelessWidget {
                 color: AppColors.greyBg,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(Icons.chair_outlined, color: AppColors.maroon),
+              child: const Icon(
+                Icons.chair_outlined,
+                color: AppColors.maroon,
+              ),
             ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(part.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16)),
-                  Text(projectName,
-                      style: const TextStyle(color: AppColors.textMuted)),
+                  Text(
+                    part.name,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    projectName,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(color: AppColors.textMuted),
+                  ),
                   const SizedBox(height: 6),
                   const Divider(height: 1),
                   const SizedBox(height: 6),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text('حالة التصميم',
-                          style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                      const Text(
+                        'حالة التصميم',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       StatusPill(
                         label: 'مكتمل التصميم',
@@ -257,10 +296,15 @@ class _CncReadyCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text('حالة الـ CNC',
-                          style: TextStyle(fontSize: 12, color: AppColors.textMuted)),
+                      const Text(
+                        'حالة الـ CNC',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
                       const SizedBox(width: 8),
                       StatusPill(
                         label: 'انتظار',
@@ -282,7 +326,8 @@ class _CncReadyCard extends StatelessWidget {
               ),
               child: const Text('بدء CNC'),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -301,38 +346,92 @@ class _CncInProgressCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(16),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Container(
+          padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Row(
-          children: [
+          child: Row(
+            textDirection: TextDirection.rtl,
+            children: [
             const CircleAvatar(
               backgroundColor: AppColors.maroon,
               child:
                   Icon(Icons.precision_manufacturing, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 12),
+            /*
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(part.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(projectName,
-                      style: const TextStyle(
-                          color: AppColors.textMuted, fontSize: 12)),
+                  Text(
+                    part.name,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    projectName,
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      color: AppColors.textMuted,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
             ),
+*/
+
+Expanded(
+  child: Align(
+    alignment: AlignmentDirectional.centerEnd,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            part.name,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            projectName,
+            textAlign: TextAlign.right,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(
+              color: AppColors.textMuted,
+              fontSize: 12,
+            ),
+          ),
+        ),
+      ],
+    ),
+  ),
+),
+
             StatusPill(
               label: 'قيد التنفيذ',
               color: AppColors.maroon,
               bgColor: AppColors.maroon.withValues(alpha: 0.08),
             ),
-          ],
+
+            ],
+          ),
         ),
       ),
     );
@@ -373,24 +472,40 @@ class _CncRequestsPlaceholder extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Row(
+
                       children: [
+
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+
+
+                            Text(part.name,
+                                style:
+                                    const TextStyle(fontWeight: FontWeight.bold)),
+
+
+                            Text(project.projectName,
+                                style: const TextStyle(
+                                    color: AppColors.textMuted, fontSize: 12)),
+
+
+                          ],
+                        ),
+                        const Spacer(),
                         StatusPill(
                           label: part.cncStatus.label,
                           color: part.cncStatus.color,
                           bgColor: part.cncStatus.color.withValues(alpha: 0.1),
                         ),
-                        const Spacer(),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(part.name,
-                                style:
-                                    const TextStyle(fontWeight: FontWeight.bold)),
-                            Text(project.projectName,
-                                style: const TextStyle(
-                                    color: AppColors.textMuted, fontSize: 12)),
-                          ],
-                        ),
+
+
+
+
+
+
+
+
                       ],
                     ),
                   );

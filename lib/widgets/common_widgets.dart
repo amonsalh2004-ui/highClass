@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../models/models.dart';
 
-/// Maroon header with the flower logo, matching every screen in the mockups.
+/// Header with the login background image, matching every screen in the mockups.
 class BrandHeader extends StatelessWidget {
   final String title;
   final String? subtitle;
   final bool showBack;
+  final bool showTitle;
   final Widget? trailing;
   final Widget? leading;
   final double height;
@@ -16,73 +17,116 @@ class BrandHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.showBack = false,
+    this.showTitle = true,
     this.trailing,
     this.leading,
     this.height = 230,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: height,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.maroon, AppColors.maroonDark],
-        ),
+@override
+Widget build(BuildContext context) {
+  // Short headers crop the portrait background too aggressively and make
+  // the embedded logo look close to an edge. Keep one consistent minimum.
+  final headerHeight = height < 210 ? 210.0 : height;
+
+  return SizedBox(
+    width: double.infinity,
+    height: headerHeight,
+    child: ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        bottom: Radius.circular(32),
       ),
-      child: SafeArea(
-        bottom: false,
-        child: Stack(
-          children: [
-            if (showBack)
-              Positioned(
-                right: 0,
-                top: 8,
-                child: _RoundIconButton(
-                  icon: Icons.arrow_forward,
-                  onTap: () => Navigator.of(context).maybePop(),
-                ),
-              ),
-            if (leading != null) Positioned(left: 0, top: 8, child: leading!),
-            if (trailing != null)
-              Positioned(left: 0, top: 8, child: trailing!),
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const _FlowerLogo(),
-                  const SizedBox(height: 10),
-                  Text(
-                    title,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          // The image already contains the Hi Class logo and its text.
+          // Do not add another logo and do not place a dark overlay above it.
+          Image.asset(
+            'assets/images/hi_class_login_background.jfif',
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+          ),
+
+          SafeArea(
+            bottom: false,
+            child: Stack(
+              children: [
+                if (showBack)
+                  PositionedDirectional(
+                    start: 16,
+                    top: 8,
+                    child: _RoundIconButton(
+                      icon: Icons.arrow_back,
+                      onTap: () => Navigator.of(context).maybePop(),
                     ),
                   ),
-                  if (subtitle != null) ...[
-                    const SizedBox(height: 6),
-                    Text(
-                      subtitle!,
-                      style: const TextStyle(
-                        color: AppColors.goldLight,
-                        fontSize: 14,
-                      ),
+
+                // In RTL, start is the right side. This keeps the bell in
+                // the same position as the reference image.
+                if (leading != null)
+                  PositionedDirectional(
+                    start: 16,
+                    top: 8,
+                    child: leading!,
+                  ),
+
+                if (trailing != null)
+                  PositionedDirectional(
+                    end: 16,
+                    top: 8,
+                    child: trailing!,
+                  ),
+
+                // The page title is centered below the logo that is already
+                // printed inside the background image.
+                if (showTitle)
+                  PositionedDirectional(
+                    start: 20,
+                    end: 20,
+                    bottom: 18,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black45,
+                                blurRadius: 5,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (subtitle != null) ...[
+                          const SizedBox(height: 4),
+                          Text(
+                            subtitle!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: AppColors.goldLight,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                  ],
-                ],
-              ),
+                  ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 class _RoundIconButton extends StatelessWidget {
@@ -102,33 +146,12 @@ class _RoundIconButton extends StatelessWidget {
           border: Border.all(color: AppColors.gold),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Icon(icon, color: AppColors.gold),
+        child: Icon(
+          icon,
+          textDirection: TextDirection.rtl,
+          color: AppColors.gold,
+        ),
       ),
-    );
-  }
-}
-
-class _FlowerLogo extends StatelessWidget {
-  const _FlowerLogo();
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Icon(Icons.spa, color: AppColors.gold, size: 46),
-        const SizedBox(height: 2),
-        const Text(
-          'هاي كلاس',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const Text(
-          'للمطابخ و الديكور',
-          style: TextStyle(color: AppColors.gold, fontSize: 11),
-        ),
-      ],
     );
   }
 }
@@ -148,15 +171,21 @@ class RolePill extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
+        textDirection: TextDirection.rtl,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(label,
-              style: const TextStyle(
-                  color: AppColors.gold, fontWeight: FontWeight.bold)),
           if (icon != null) ...[
-            const SizedBox(width: 6),
             Icon(icon, color: AppColors.gold, size: 18),
+            const SizedBox(width: 6),
           ],
+          Text(
+            label,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: AppColors.gold,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );
@@ -241,11 +270,19 @@ class LabeledProgressBar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         children: [
-          SizedBox(
-            width: 46,
-            child: Text('${(percent * 100).round()}%',
-                style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+          // In RTL the first child is visually on the right.
+          Text(
+            label,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              color: AppColors.textDark,
+              fontWeight: FontWeight.w600,
+            ),
           ),
+          if (icon != null) ...[
+            const SizedBox(width: 6),
+            Icon(icon, color: color, size: 18),
+          ],
           const SizedBox(width: 10),
           Expanded(
             child: ClipRRect(
@@ -259,11 +296,14 @@ class LabeledProgressBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          if (icon != null) Icon(icon, color: color, size: 18),
-          const SizedBox(width: 6),
-          Text(label,
-              style: const TextStyle(
-                  color: AppColors.textDark, fontWeight: FontWeight.w600)),
+          SizedBox(
+            width: 46,
+            child: Text(
+              '${(percent * 100).round()}%',
+              textAlign: TextAlign.left,
+              style: TextStyle(color: color, fontWeight: FontWeight.bold),
+            ),
+          ),
         ],
       ),
     );
@@ -292,14 +332,18 @@ class StatusPill extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
+        textDirection: TextDirection.rtl,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Text(
+            label,
+            textAlign: TextAlign.left,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
+          ),
           if (icon != null) ...[
-            Icon(icon, size: 15, color: color),
             const SizedBox(width: 4),
+            Icon(icon, size: 15, color: color),
           ],
-          Text(label,
-              style: TextStyle(color: color, fontWeight: FontWeight.bold)),
         ],
       ),
     );

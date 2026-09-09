@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 import '../../data/app_data.dart';
+import '../../models/models.dart';
 import '../../widgets/common_widgets.dart';
 import '../shared/projects_list_screen.dart';
 import '../designer/part_details_screen.dart';
+import '../engineer/cnc_execution_details_screen.dart';
 import '../login_screen.dart';
 
 class ManagerDashboardScreen extends StatefulWidget {
@@ -19,7 +21,7 @@ class _ManagerDashboardScreenState extends State<ManagerDashboardScreen> {
 
   final _tabs = [
     const _OverviewTab(),
-    const ProjectsListScreen(),
+    const ProjectsListScreen(currentRole: UserRole.manager),
     const _ReportsPlaceholder(),
     const _AccountPlaceholder(),
   ];
@@ -211,7 +213,7 @@ class _OverviewTab extends StatelessWidget {
                       children: [
                         const Align(
                           alignment: Alignment.centerRight,
-                          child: Text('يحتاج متابعة',
+                          child: Text('البيانات الناقصة',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 16)),
                         ),
@@ -219,16 +221,28 @@ class _OverviewTab extends StatelessWidget {
                         if (needsAttention.isEmpty)
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 12),
-                            child: Text('لا يوجد عناصر تحتاج متابعة حالياً',
+                            child: Text('لا توجد بيانات ناقصة مضافة حالياً',
                                 style: TextStyle(color: AppColors.textMuted)),
                           ),
                         ...needsAttention.map((part) {
                           final project = data.projectOfPart(part);
+                          final addedData = part.missingData
+                              .map((item) => item.text)
+                              .join('، ');
                           return InkWell(
                             onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
-                                    builder: (_) =>
-                                        PartDetailsScreen(part: part))),
+                                                                        builder: (_) =>
+                                        part.designStatus ==
+                                                DesignStatus.completed
+                                            ? CncExecutionDetailsScreen(
+                                                part: part,
+                                                currentRole: UserRole.manager,
+                                              )
+                                            : PartDetailsScreen(
+                                                part: part,
+                                                currentRole: UserRole.manager,
+                                              ))),
                             borderRadius: BorderRadius.circular(14),
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 10),
@@ -254,14 +268,17 @@ class _OverviewTab extends StatelessWidget {
                                             style: const TextStyle(
                                                 fontWeight: FontWeight.bold)),
                                         Text(
-                                            '${part.name} • ${part.missingInfo.join('، ')}',
+                                            '${part.name} • $addedData',
                                             style: const TextStyle(
                                                 color: AppColors.gold)),
                                       ],
                                     ),
                                   ),
-                                  const Icon(Icons.chevron_left,
-                                      color: AppColors.textMuted),
+                                  const Icon(
+                                    Icons.chevron_left,
+                                    textDirection: TextDirection.ltr,
+                                    color: AppColors.textMuted,
+                                  ),
                                 ],
                               ),
                             ),

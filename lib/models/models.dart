@@ -117,13 +117,26 @@ class NoteEntry {
   NoteEntry({required this.author, required this.text, required this.time});
 }
 
+class MissingDataItem {
+  final String author;
+  final String text;
+  final DateTime time;
+
+  MissingDataItem({
+    required this.author,
+    required this.text,
+    required this.time,
+  });
+}
+
 class Part {
   String id;
   String name;
   String description;
   DesignStatus designStatus;
   CncStatus cncStatus;
-  List<String> missingInfo;
+  String driveLink;
+  List<MissingDataItem> missingData;
   List<NoteEntry> notes;
 
   Part({
@@ -132,9 +145,10 @@ class Part {
     this.description = '',
     this.designStatus = DesignStatus.notStarted,
     this.cncStatus = CncStatus.waiting,
-    List<String>? missingInfo,
+    this.driveLink = '',
+    List<MissingDataItem>? missingData,
     List<NoteEntry>? notes,
-  })  : missingInfo = missingInfo ?? [],
+  })  : missingData = missingData ?? [],
         notes = notes ?? [];
 }
 

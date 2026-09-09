@@ -25,7 +25,7 @@ class AppData {
           description: 'مطبخ داخلي مع خزائن علوية وسفلية',
           designStatus: DesignStatus.inProgress,
           cncStatus: CncStatus.waiting,
-          missingInfo: ['قياسات الجدار', 'نقاط الكهرباء'],
+          
           notes: [
             NoteEntry(
                 author: 'أحمد',
@@ -93,8 +93,7 @@ class AppData {
         Part(
             id: 'pt6',
             name: 'TV Unit',
-            designStatus: DesignStatus.notStarted,
-            missingInfo: ['قياسات الجدار']),
+                        designStatus: DesignStatus.notStarted),
         Part(id: 'pt7', name: 'مطبخ', designStatus: DesignStatus.inProgress),
         Part(id: 'pt8', name: 'غرفة نوم', designStatus: DesignStatus.notStarted),
         Part(id: 'pt9', name: 'مدخل', designStatus: DesignStatus.notStarted),
@@ -142,7 +141,7 @@ class AppData {
 
   List<Part> get partsNeedingAttention => projects
       .expand((p) => p.parts)
-      .where((pt) => pt.missingInfo.isNotEmpty)
+      .where((pt) => pt.missingData.isNotEmpty)
       .toList();
 
   Project projectOfPart(Part part) =>

@@ -86,6 +86,7 @@ class _DesignerHomeTabState extends State<_DesignerHomeTab> {
           BrandHeader(
             title: 'لوحة التحكم',
             height: 190,
+            
             leading: const Padding(
               padding: EdgeInsets.only(top: 4),
               child: Icon(Icons.notifications_none, color: AppColors.gold),
@@ -160,11 +161,12 @@ class _DesignerHomeTabState extends State<_DesignerHomeTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('عرض الكل',
-                          style: TextStyle(color: AppColors.gold)),
                       const Text('أجزائي الحالية',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text('عرض الكل',
+                          style: TextStyle(color: AppColors.gold)),
+                      
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -208,89 +210,147 @@ class _DesignerPartCard extends StatelessWidget {
             ? 0.7
             : 0.0;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: AppColors.cardBackground,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: AppColors.cardBackground,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
                 color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 8,
-                offset: const Offset(0, 3)),
-          ],
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                color: AppColors.greyBg,
-                borderRadius: BorderRadius.circular(14),
+                offset: const Offset(0, 3),
               ),
-              child: const Icon(Icons.chair_outlined, color: AppColors.gold),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  StatusPill(
-                    label: part.designStatus.label,
-                    color: part.designStatus.color,
-                    bgColor: part.designStatus.bgColor,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(part.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 17)),
-                  const SizedBox(height: 4),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(projectName,
-                          style: const TextStyle(color: AppColors.textMuted)),
-                      const SizedBox(width: 4),
-                      const Icon(Icons.location_on_outlined,
-                          size: 14, color: AppColors.gold),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text('${(progress * 100).round()}%',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12)),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: LinearProgressIndicator(
-                            value: progress,
-                            minHeight: 6,
-                            backgroundColor: AppColors.greyBg,
-                            color: part.designStatus.color,
-                          ),
+            ],
+          ),
+          child: Row(
+            textDirection: TextDirection.rtl,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // الأيقونة تكون في الجهة اليمنى.
+              Container(
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                  color: AppColors.greyBg,
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(
+                  Icons.chair_outlined,
+                  color: AppColors.gold,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: StatusPill(
+                        label: part.designStatus.label,
+                        color: part.designStatus.color,
+                        bgColor: part.designStatus.bgColor,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        part.name,
+                        textAlign: TextAlign.right,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  const Align(
-                    alignment: Alignment.centerRight,
-                    child: Text('التقدم',
+                    ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        textDirection: TextDirection.rtl,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            size: 14,
+                            color: AppColors.gold,
+                          ),
+                          const SizedBox(width: 4),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 220),
+                            child: Text(
+                              projectName,
+                              textAlign: TextAlign.right,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: AppColors.textMuted,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10), 
+                    const Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'التقدم',
+                        textAlign: TextAlign.right,
                         style: TextStyle(
-                            color: AppColors.textMuted, fontSize: 11)),
-                  ),
-                ],
+                          color: AppColors.textMuted,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),                    
+                    
+                    const SizedBox(height: 4),
+
+                    Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        Text(
+                          '${(progress * 100).round()}%',
+                          textAlign: TextAlign.right,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: LinearProgressIndicator(
+                              value: progress,
+                              minHeight: 6,
+                              backgroundColor: AppColors.greyBg,
+                              color: part.designStatus.color,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+
+                   
+
+
+
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -304,7 +364,11 @@ class _NotificationsPlaceholder extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const BrandHeader(title: 'التنبيهات', height: 170),
+          const BrandHeader(
+            title: 'التنبيهات',
+            height: 170,
+            showTitle: false,
+          ),
           Expanded(
             child: Container(
               width: double.infinity,
@@ -331,7 +395,11 @@ class _AccountPlaceholder extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const BrandHeader(title: 'حسابي', height: 170),
+          const BrandHeader(
+            title: 'حسابي',
+            height: 170,
+            showTitle: false,
+          ),
           Expanded(
             child: Container(
               width: double.infinity,
